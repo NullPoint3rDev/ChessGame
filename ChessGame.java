@@ -1,5 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
+/*
+Still need to fix GUI and optimization
+ */
 
 public class ChessGame {
     private ChessBoard board;
@@ -19,7 +22,7 @@ public class ChessGame {
     }
 
     public PieceColor getCurrentPlayerColor() {
-        return whiteTurn ? PieceColor.WHITE : PieceColor.BLACK;
+        return whiteTurn ? PieceColor.BROWN : PieceColor.BLACK;
     }
 
     private Position selectedPosition;
@@ -32,7 +35,7 @@ public class ChessGame {
         if (selectedPosition == null) {
             Piece selectedPiece = board.getPiece(row, col);
             if (selectedPiece != null
-                    && selectedPiece.getColor() == (whiteTurn ? PieceColor.WHITE : PieceColor.BLACK)) {
+                    && selectedPiece.getColor() == (whiteTurn ? PieceColor.BROWN : PieceColor.BLACK)) {
                 selectedPosition = new Position(row, col);
                 return false;
             }
@@ -46,7 +49,7 @@ public class ChessGame {
 
     public boolean makeMove(Position start, Position end) {
         Piece movingPiece = board.getPiece(start.getRow(), start.getColumn());
-        if (movingPiece == null || movingPiece.getColor() != (whiteTurn ? PieceColor.WHITE : PieceColor.BLACK)) {
+        if (movingPiece == null || movingPiece.getColor() != (whiteTurn ? PieceColor.BROWN : PieceColor.BLACK)) {
             return false;
         }
 
@@ -139,22 +142,22 @@ public class ChessGame {
                 addPawnMoves(position, selectedPiece.getColor(), legalMoves);
                 break;
             case "Rook":
-                addLineMoves(position, new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }, legalMoves);
+                addLineMoves(position, new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}, legalMoves);
                 break;
             case "Knight":
-                addSingleMoves(position, new int[][] { { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 }, { 1, 2 }, { -1, 2 },
-                        { 1, -2 }, { -1, -2 } }, legalMoves);
+                addSingleMoves(position, new int[][]{{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {-1, 2},
+                        {1, -2}, {-1, -2}}, legalMoves);
                 break;
             case "Bishop":
-                addLineMoves(position, new int[][] { { 1, 1 }, { -1, -1 }, { 1, -1 }, { -1, 1 } }, legalMoves);
+                addLineMoves(position, new int[][]{{1, 1}, {-1, -1}, {1, -1}, {-1, 1}}, legalMoves);
                 break;
             case "Queen":
-                addLineMoves(position, new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { -1, -1 },
-                        { 1, -1 }, { -1, 1 } }, legalMoves);
+                addLineMoves(position, new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1},
+                        {1, -1}, {-1, 1}}, legalMoves);
                 break;
             case "King":
-                addSingleMoves(position, new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }, { 1, 1 }, { -1, -1 },
-                        { 1, -1 }, { -1, 1 } }, legalMoves);
+                addSingleMoves(position, new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1},
+                        {1, -1}, {-1, 1}}, legalMoves);
                 break;
         }
         return legalMoves;
@@ -190,13 +193,13 @@ public class ChessGame {
     }
 
     private void addPawnMoves(Position position, PieceColor color, List<Position> legalMoves) {
-        int direction = color == PieceColor.WHITE ? -1 : 1;
+        int direction = color == PieceColor.BROWN ? -1 : 1;
         Position newPos = new Position(position.getRow() + direction, position.getColumn());
         if (isPositionOnBoard(newPos) && board.getPiece(newPos.getRow(), newPos.getColumn()) == null) {
             legalMoves.add(newPos);
         }
 
-        if ((color == PieceColor.WHITE && position.getRow() == 6)
+        if ((color == PieceColor.BROWN && position.getRow() == 6)
                 || (color == PieceColor.BLACK && position.getRow() == 1)) {
             newPos = new Position(position.getRow() + 2 * direction, position.getColumn());
             Position intermediatePos = new Position(position.getRow() + direction, position.getColumn());
@@ -206,7 +209,7 @@ public class ChessGame {
             }
         }
 
-        int[] captureCols = { position.getColumn() - 1, position.getColumn() + 1 };
+        int[] captureCols = {position.getColumn() - 1, position.getColumn() + 1};
         for (int col : captureCols) {
             newPos = new Position(position.getRow() + direction, col);
             if (isPositionOnBoard(newPos) && board.getPiece(newPos.getRow(), newPos.getColumn()) != null &&

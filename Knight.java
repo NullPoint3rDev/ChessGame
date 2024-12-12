@@ -1,36 +1,31 @@
-import javax.swing.text.Position;
-
 public class Knight extends Piece {
-
-
-    public Knight(Position position, PieceColor pieceColor) {
-        super(position, pieceColor);
+    public Knight(PieceColor color, Position position) {
+        super(color, position);
     }
 
     @Override
-    public boolean isMoveValid(Position newPosition, Piece[][] board) {
+    public boolean isValidMove(Position newPosition, Piece[][] board) {
         if (newPosition.equals(this.position)) {
-            return false; /* Checking if we at the same position. Notice, that we cannot
-            move to the same position */
+            return false; // Cannot move to the same position
         }
 
-        int rowDifference = Math.abs(this.position.getRow() - newPosition.getRow());
-        int colorDifference = Math.abs(this.position.getColumn() - newPosition.getColumn());
+        int rowDiff = Math.abs(this.position.getRow() - newPosition.getRow());
+        int colDiff = Math.abs(this.position.getColumn() - newPosition.getColumn());
 
-        // Now let's check if we can use 'L' ('Г') move pattern
-        boolean isMoveLegal = (rowDifference == 2 && colorDifference == 1)
-                || (rowDifference == 1 && colorDifference == 2);
-        if (!isMoveLegal) {
-            return false; // Illegal knight's move
+        // Check for the 'L' shaped move pattern
+        boolean isValidLMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
+
+        if (!isValidLMove) {
+            return false; // Not a valid knight move
         }
 
-        // Move is legal if the destination square is empty or contains opponent's piece
+        // Move is valid if the destination square is empty or contains an opponent's
+        // piece
         Piece targetPiece = board[newPosition.getRow()][newPosition.getColumn()];
         if (targetPiece == null) {
-            return true; // Square is empty so the move is legal
+            return true; // The square is empty, move is valid
         } else {
-            return targetPiece.getPieceColor() != this.getPieceColor(); /* Can capture if this
-            is opponent's piece */
+            return targetPiece.getColor() != this.getColor(); // Can capture if it's an opponent's piece
         }
     }
 }

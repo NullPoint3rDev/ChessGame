@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+/*
+Still need to fix GUI and optimization
+ */
+
 public class ChessGameGUI extends JFrame {
     private final ChessSquareComponent[][] squares = new ChessSquareComponent[8][8];
     private final ChessGame game = new ChessGame();

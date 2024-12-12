@@ -1,28 +1,26 @@
-import javax.swing.text.Position;
-
 public abstract class Piece {
+    /*
+Still need to fix GUI and optimization
+ */
     protected Position position;
-    protected PieceColor pieceColor;
+    protected PieceColor color;
 
-    public Piece(Position position, PieceColor pieceColor) {
+    public Piece(PieceColor color, Position position) {
+        this.color = color;
         this.position = position;
-        this.pieceColor = pieceColor;
+    }
+
+    public PieceColor getColor() {
+        return color;
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public PieceColor getPieceColor() {
-        return pieceColor;
-    }
-
-    // This setter needed for updating a piece's position
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    // This function will determine if move is legal
-    public abstract boolean isMoveValid(Position newPosition, Piece[][] board);
-
+    public abstract boolean isValidMove(Position newPosition, Piece[][] board);
 }

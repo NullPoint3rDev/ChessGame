@@ -1,4 +1,7 @@
 public class Position {
+    /*
+Still need to fix GUI and optimization
+ */
     private int row;
     private int column;
 
