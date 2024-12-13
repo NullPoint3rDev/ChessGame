@@ -22,7 +22,7 @@ public class ChessGame {
     }
 
     public PieceColor getCurrentPlayerColor() {
-        return whiteTurn ? PieceColor.BROWN : PieceColor.BLACK;
+        return whiteTurn ? PieceColor.WHITE : PieceColor.BLACK;
     }
 
     private Position selectedPosition;
@@ -35,7 +35,7 @@ public class ChessGame {
         if (selectedPosition == null) {
             Piece selectedPiece = board.getPiece(row, col);
             if (selectedPiece != null
-                    && selectedPiece.getColor() == (whiteTurn ? PieceColor.BROWN : PieceColor.BLACK)) {
+                    && selectedPiece.getColor() == (whiteTurn ? PieceColor.WHITE : PieceColor.BLACK)) {
                 selectedPosition = new Position(row, col);
                 return false;
             }
@@ -49,7 +49,7 @@ public class ChessGame {
 
     public boolean makeMove(Position start, Position end) {
         Piece movingPiece = board.getPiece(start.getRow(), start.getColumn());
-        if (movingPiece == null || movingPiece.getColor() != (whiteTurn ? PieceColor.BROWN : PieceColor.BLACK)) {
+        if (movingPiece == null || movingPiece.getColor() != (whiteTurn ? PieceColor.WHITE : PieceColor.BLACK)) {
             return false;
         }
 
@@ -193,13 +193,13 @@ public class ChessGame {
     }
 
     private void addPawnMoves(Position position, PieceColor color, List<Position> legalMoves) {
-        int direction = color == PieceColor.BROWN ? -1 : 1;
+        int direction = color == PieceColor.WHITE ? -1 : 1;
         Position newPos = new Position(position.getRow() + direction, position.getColumn());
         if (isPositionOnBoard(newPos) && board.getPiece(newPos.getRow(), newPos.getColumn()) == null) {
             legalMoves.add(newPos);
         }
 
-        if ((color == PieceColor.BROWN && position.getRow() == 6)
+        if ((color == PieceColor.WHITE && position.getRow() == 6)
                 || (color == PieceColor.BLACK && position.getRow() == 1)) {
             newPos = new Position(position.getRow() + 2 * direction, position.getColumn());
             Position intermediatePos = new Position(position.getRow() + direction, position.getColumn());

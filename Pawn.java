@@ -5,7 +5,7 @@ public class Pawn extends Piece {
 
     @Override
     public boolean isValidMove(Position newPosition, Piece[][] board) {
-        int forwardDirection = color == PieceColor.BROWN ? -1 : 1;
+        int forwardDirection = color == PieceColor.WHITE ? -1 : 1;
         int rowDiff = (newPosition.getRow() - position.getRow()) * forwardDirection;
         int colDiff = newPosition.getColumn() - position.getColumn();
 
@@ -15,7 +15,7 @@ public class Pawn extends Piece {
         }
 
         // Initial two-square move
-        boolean isStartingPosition = (color == PieceColor.BROWN && position.getRow() == 6) ||
+        boolean isStartingPosition = (color == PieceColor.WHITE && position.getRow() == 6) ||
                 (color == PieceColor.BLACK && position.getRow() == 1);
         if (colDiff == 0 && rowDiff == 2 && isStartingPosition
                 && board[newPosition.getRow()][newPosition.getColumn()] == null) {

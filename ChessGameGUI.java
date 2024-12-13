@@ -41,6 +41,14 @@ public class ChessGameGUI extends JFrame {
                 final int finalRow = row;
                 final int finalCol = col;
                 ChessSquareComponent square = new ChessSquareComponent(row, col);
+
+                // Setting start square color
+                Color backgroundColor = (row + col) % 2 == 0 ? new Color(14, 152, 245) :
+                        new Color(6, 134, 245);
+                square.setBackground(backgroundColor);
+
+                System.out.println("Row: " + row + ",Col: " + col + ",Color: " + backgroundColor);
+
                 square.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -52,6 +60,7 @@ public class ChessGameGUI extends JFrame {
             }
         }
         refreshBoard();
+
     }
 
     private void refreshBoard() {
@@ -62,7 +71,7 @@ public class ChessGameGUI extends JFrame {
                 if (piece != null) {
                     // If using Unicode symbols:
                     String symbol = pieceUnicodeMap.get(piece.getClass());
-                    Color color = (piece.getColor() == PieceColor.BROWN) ? Color.WHITE : Color.BLACK;
+                    Color color = (piece.getColor() == PieceColor.WHITE) ? new Color(22, 220, 220) : new Color(0, 0, 0);
                     squares[row][col].setPieceSymbol(symbol, color);
                 } else {
                     squares[row][col].clearPieceSymbol();
@@ -103,7 +112,11 @@ public class ChessGameGUI extends JFrame {
     private void clearHighlights() {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                squares[row][col].setBackground((row + col) % 2 == 0 ? Color.LIGHT_GRAY : new Color(205, 133, 63));
+
+                // Restoring colors depends on position
+                Color backgroundColor = (row + col) % 2 == 0 ? new Color(14, 152, 245) :
+                        new Color(6, 134, 245);
+                squares[row][col].setBackground(backgroundColor); // Reset color
             }
         }
     }
