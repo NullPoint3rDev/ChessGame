@@ -15,7 +15,7 @@ public class ChessSquareComponent extends JButton {
     }
 
     private void initButton() {
-        setPreferredSize(new Dimension(64, 64));
+        setPreferredSize(new Dimension(128, 128));
         setOpaque(true);
 
         if ((row + col) % 2 == 0) {
@@ -24,7 +24,7 @@ public class ChessSquareComponent extends JButton {
             setBackground(new Color(6, 134, 245));
         }
 
-        setForeground(new Color(218, 116, 189));
+        setForeground(new Color(50, 50, 50));
 
         setHorizontalAlignment(SwingConstants.CENTER);
         setVerticalAlignment(SwingConstants.CENTER);

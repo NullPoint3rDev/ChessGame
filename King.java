@@ -15,7 +15,13 @@ public class King extends Piece {
             return false; // Move is not within one square.
         }
 
+
         Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
+        // Check if destination contains an opponent's piece
+        if (destinationPiece instanceof King) {
+            return false;
+        }
+
         // The move is valid if the destination is empty or contains an opponent's
         // piece.
         return destinationPiece == null || destinationPiece.getColor() != this.getColor();

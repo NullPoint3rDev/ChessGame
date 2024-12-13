@@ -54,11 +54,30 @@ public class ChessGame {
         }
 
         if (movingPiece.isValidMove(end, board.getBoard())) {
+            Piece temp = board.getPiece(end.getRow(), end.getColumn());
             board.movePiece(start, end);
+
+            if (areKingsTooClose()) {
+                // Revert the move
+                board.movePiece(end, start);
+                board.setPiece(end.getRow(), end.getColumn(), temp);
+                return false;
+            }
+
             whiteTurn = !whiteTurn;
             return true;
         }
         return false;
+    }
+
+    private boolean areKingsTooClose() {
+        Position whiteKingPosition = findKingPosition(PieceColor.WHITE);
+        Position blackKingPosition = findKingPosition(PieceColor.BLACK);
+
+        int rowDifference = Math.abs(whiteKingPosition.getRow() - blackKingPosition.getRow());
+        int colDifference = Math.abs(whiteKingPosition.getColumn() - blackKingPosition.getColumn());
+
+        return rowDifference <= 1 && colDifference <= 1;
     }
 
     public boolean isInCheck(PieceColor kingColor) {
