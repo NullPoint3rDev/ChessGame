@@ -2,12 +2,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChessGameGUI extends Application {
 
@@ -16,23 +14,46 @@ public class ChessGameGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        GridPane grid = new GridPane();
-        initializeBoard(grid);
+        GridPane boardGrid = new GridPane();
+        initializeBoard(boardGrid);
 
         Button resetButton = new Button("Reset Game");
         resetButton.setOnAction(e -> resetGame());
-        grid.add(resetButton, 0, 8, 8, 1); // Размещение кнопки внизу доски
 
-        Scene scene = new Scene(grid, 500, 550);
-        primaryStage.setTitle("Chess Game");
+        BorderPane layout = new BorderPane();
+        layout.setCenter(boardGrid);
+        layout.setBottom(resetButton);
+
+        Scene scene = new Scene(layout);
+        primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
+
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> adjustBoard(boardGrid, scene));
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> adjustBoard(boardGrid, scene));
+
+        adjustBoard(boardGrid, scene);
+        primaryStage.setTitle("Chess Game");
         primaryStage.show();
+    }
+
+    private void adjustBoard(GridPane boardGrid, Scene scene) {
+        double size = Math.min(scene.getWidth(), scene.getHeight());
+        double squareSize = size / 8;
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessSquareComponent square = squares[row][col];
+                if (square != null) {
+                    square.resizeSquare(squareSize);
+                }
+            }
+        }
     }
 
     private void initializeBoard(GridPane grid) {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                ChessSquareComponent square = new ChessSquareComponent(row, col);
+                ChessSquareComponent square = new ChessSquareComponent(row, col, 60);
                 int finalRow = row;
                 int finalCol = col;
                 square.setOnMouseClicked(e -> handleSquareClick(finalRow, finalCol));
@@ -59,9 +80,7 @@ public class ChessGameGUI extends Application {
         }
     }
 
-
     private String getPieceUnicode(Piece piece) {
-        // Пример получения символа Unicode для фигур
         if (piece instanceof Pawn) return "\u2659";
         if (piece instanceof Rook) return "\u2656";
         if (piece instanceof Knight) return "\u2658";
@@ -71,14 +90,9 @@ public class ChessGameGUI extends Application {
         return "";
     }
 
-    private ChessSquareComponent highlightedSquare = null;
-
     private void handleSquareClick(int row, int col) {
-        if (highlightedSquare != null) {
-            highlightedSquare.removeHighlightPiece(); // Removing highlight from the previous piece
-        }
-        highlightedSquare = squares[row][col];
-        highlightedSquare.highlightPiece(); // Highlighting chosen piece
+        ChessSquareComponent highlightedSquare = squares[row][col];
+        highlightedSquare.highlightPiece();
 
         boolean moveResult = game.handleSquareSelection(row, col);
         if (moveResult) {
